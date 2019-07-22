@@ -39,7 +39,7 @@ galaxy_info:
 
   galaxy_tags:
     - kubernetes
-    - raspberry pi
+    - raspberrypi
     - haproxy
     - heartbeat
     - terraform
