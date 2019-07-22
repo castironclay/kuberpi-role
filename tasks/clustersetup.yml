@@ -27,7 +27,8 @@
 
 - name: Reload Daemon
   become: yes
-  command: systemctl daemon-reload
+  systemd:
+    daemon_reload: yes
 
 - name: Pull K8s Images
   command: 'kubeadm config images pull v3'
