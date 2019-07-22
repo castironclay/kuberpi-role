@@ -1,12 +1,13 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This role  is used to setup an HA Kubernetes cluster with 7 Raspberry Pis.<br>
+This role will end with a 5 node cluster (2 masters and 3 workers) all in the ready status and use the Weave network overlay.<br>
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+All hosts that will be targeted by this role should be flashed with Hypriot v1.10 and not the traditional Raspbian image. 
 
 Role Variables
 --------------
@@ -30,9 +31,4 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Apache
