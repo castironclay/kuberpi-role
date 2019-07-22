@@ -48,6 +48,7 @@
   template:
     src: templates/workers/haresources
     dest: /etc/ha.d/haresources
+    mode: '0644'
 
 - name: Restart Heartbeat
   become: yes
