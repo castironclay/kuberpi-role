@@ -23,7 +23,9 @@
 
 - name: Disable Swap_3
   become: true
-  command: systemctl disable dphys-swapfile
+  systemd:
+    name: dphys-swapfile
+    enabled: no
 
 - name: Set Authorized Keys
   authorized_key:
