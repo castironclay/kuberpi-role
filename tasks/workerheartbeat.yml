@@ -14,7 +14,7 @@
     dest: /etc/ha.d/ha.cf
     owner: root
     group: root
-    mode: 600
+    mode: '0600'
 
 - name: Copy Worker2 Heartbeat Files
   become: yes
@@ -24,6 +24,7 @@
     dest: /etc/ha.d/ha.cf
     owner: root
     group: root
+    mode: '0600'
 
 - name: Copy Worker3 Heartbeat Files
   become: yes
@@ -33,6 +34,7 @@
     dest: /etc/ha.d/ha.cf
     owner: root
     group: root
+    mode: '0600'
 
 - name: Copy Heartbeat Auth Files
   become: yes
