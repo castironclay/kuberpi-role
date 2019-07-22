@@ -40,7 +40,7 @@
 
 - name: Copy Weave Network Manifest
   template:
-    src: ../templates/masters/weave.sh
+    src: templates/masters/weave.sh
     dest: $HOME/weave.sh
   tags: kubectl_network_manifest
 
