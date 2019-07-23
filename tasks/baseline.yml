@@ -12,7 +12,7 @@
 - name: Hold Docker Version
   become: true
   command: apt-mark hold docker
-  when: '"docker" not in docker_hold.stdout' 
+  when: '"docker" not in docker_hold.stdout'
 
 - name: Update and upgrade apt packages
   become: true
