@@ -42,7 +42,7 @@
 - name: Weave Manfiest Check
   stat:
     path: $HOME/weave.sh
-  register: weave_manifest
+  register: weave
 
 - name: Copy Weave Network Manifest
   template:
