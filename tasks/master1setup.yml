@@ -3,19 +3,18 @@
     path: $HOME/.kube/config
   register: kube_config
 
-- meta: end_play
-  when: kube_config.stat.exists
-
 - name: Copy kubeadm-config.yaml
   template:
     src: templates/masters/kubeadm-config.yaml
     dest: /home/pirate/kubeadm-config.yaml
   with_items: "{{ ip }}"
+  when: kube_config_stats.exists == 'False'
 
 - name: Kubeadm init Master1
   become: yes
   command: kubeadm init --config /home/pirate/kubeadm-config.yaml --upload-certs
   tags: kubeadm_init
+  when: kube_config_stats.exists == 'False'
 
 - name: Create a directory if it does not exist
   file:
@@ -23,11 +22,13 @@
     state: directory
     mode: '0755'
   tags: kubeadm_config
+  when: kube_config_stats.exists == 'False'
 
 - name: Copy config file
   become: yes
   command: cp /etc/kubernetes/admin.conf /home/pirate/.kube/config
   tags: kubeadm_config
+  when: kube_config_stats.exists == 'False'
 
 - name: Chown file
   become: true
@@ -36,16 +37,24 @@
     owner: pirate
     group: pirate
   tags: kubeadm_config
+  when: kube_config_stats.exists == 'False'
+
+- name: Weave Manfiest Check
+  stat:
+    path: $HOME/weave.sh
+  register: weave_manifest
 
 - name: Copy Weave Network Manifest
   template:
     src: templates/masters/weave.sh
     dest: $HOME/weave.sh
   tags: kubectl_network_manifest
+  when: weave_stats.exists == 'False'
 
 - name: Apply Weave Network Manifest
   command: bash $HOME/weave.sh
   tags: kubectl_apply_weave
+  when: weave_stats.exists == 'False'
 
 - name: Generate join command
   command: kubeadm token create --print-join-command
