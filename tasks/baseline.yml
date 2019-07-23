@@ -42,8 +42,9 @@
     group: root
     mode: '0644'
 
-# reboot if changed
 - name: Set Hostnames
   become: true
   hostname: name={{ inventory_hostname }}
-  notify: Reboot
+
+- name: Reboot
+  reboot:
