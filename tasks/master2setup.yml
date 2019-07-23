@@ -1,19 +1,25 @@
+- name: Current Kubeadm Check
+  stat:
+    path: $HOME/.kube/config
+  register: kube_config
+  when: inventory_hostname == 'master2'
+
 - name: Generate join command pt. 1
   become: true
-  when: inventory_hostname == 'master1'
+  when: inventory_hostname == 'master1' and not kube_config.stat.exists
   command: kubeadm token create --print-join-command
   register: kubeadm_token
   tags: generate_join
 
 - name: Generate join command pt. 2
   become: true
-  when: inventory_hostname == 'master1'
+  when: inventory_hostname == 'master1' and not kube_config.stat.exists
   command: kubeadm init phase upload-certs --upload-certs
   register: kubeadm_certs
   tags: generate_join
 
 - name: Copy Control-Plane Join Manifest
-  when: inventory_hostname == 'master2'
+  when: inventory_hostname == 'master2' and not kube_config.stat.exists
   template:
     src: templates/masters/master-join.sh
     dest: /home/pirate/master-join.sh
@@ -21,6 +27,29 @@
 
 - name: Kubeadm Join
   become: true
-  when: inventory_hostname == 'master2'
+  when: inventory_hostname == 'master2' and not kube_config.stat.exists
   command: bash /home/pirate/master-join.sh
   tags: kubeadm_join
+
+- name: Create a directory if it does not exist
+  file:
+    path: $HOME/.kube
+    state: directory
+    mode: '0755'
+  tags: kubeadm_config
+  when: not kube_config.stat.exists and inventory_hostname == 'master2'
+
+- name: Copy config file
+  become: yes
+  command: cp /etc/kubernetes/admin.conf /home/pirate/.kube/config
+  tags: kubeadm_config
+  when: not kube_config.stat.exists and inventory_hostname == 'master2'
+
+- name: Chown file
+  become: true
+  file:
+    path: /home/pirate/.kube/config
+    owner: pirate
+    group: pirate
+  tags: kubeadm_config
+  when: not kube_config.stat.exists and inventory_hostname == 'master2'
