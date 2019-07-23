@@ -6,6 +6,7 @@
 
 - meta: end_play
   when: node_exporter.stat.exists
+  ignore_errors: True
 
 - name: Retrieve and Unarchive Binary
   unarchive:
