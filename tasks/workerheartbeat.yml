@@ -71,6 +71,7 @@
     path: /lib/systemd/system/heartbeat.service
     regexp: '^Restart='
     line: 'Restart=on-failure'
+  notify: Reboot
 
 - name: Set Sysctl
   become: true
@@ -79,7 +80,3 @@
     value: 1
     state: present
     reload: yes
-
-- name: Reboot
-  become: true
-  reboot:
