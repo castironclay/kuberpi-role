@@ -41,4 +41,4 @@
 ## Kube init on Master2
 - name: Master2 Setup
   include_tasks: master2setup.yml
-  when: inventory_hostname == 'master2'
+  when: inventory_hostname == 'master2' or inventory_hostname == 'master1'
