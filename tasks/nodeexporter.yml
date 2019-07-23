@@ -1,4 +1,12 @@
 # tasks file for install prometheus node exporter
+- name: Node Exporter Check
+  stat:
+    path: /etc/sysconfig/node_exporter
+  register: node_exporter
+
+- meta: end_play
+  when: node_exporter.stat.exists
+
 - name: Retrieve and Unarchive Binary
   unarchive:
     src: https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-armv7.tar.gz

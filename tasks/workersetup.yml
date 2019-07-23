@@ -1,7 +1,22 @@
+- name: Generate join command
+  command: kubeadm token create --print-join-command
+  register: join_command
+  tags: kubeadm_command
+  when: inventory_hostname == 'master1'
+
+- name: Copy join command to local file
+  copy:
+    content: "{{ join_command.stdout_lines[0] }}"
+    dest: templates/workers/join-command.sh
+  delegate_to: localhost
+  tags: kubeadm_command
+  when: inventory_hostname == 'master1'
+
 - name: Copy Join Script
   template:
     src: templates/workers/join-command.sh
     dest: $HOME/join-command.sh
+  when: inventory_hostname == 'worker1' or inventory_hostname == 'worker2' or inventory_hostname == 'worker3'
 
 - name: Add Sudo
   replace:
@@ -9,7 +24,10 @@
     regexp: 'kubeadm'
     replace: 'sudo kubeadm'
     backup: yes
+  when: inventory_hostname == 'worker1' or inventory_hostname == 'worker2' or inventory_hostname == 'worker3'
+
 
 - name: Kubeadm Join
   command: bash $HOME/join-command.sh
   tags: kubeadm_join
+  when: inventory_hostname == 'worker1' or inventory_hostname == 'worker2' or inventory_hostname == 'worker3'

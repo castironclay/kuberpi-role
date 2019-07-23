@@ -3,9 +3,7 @@
     path: $HOME/.kube/config
   register: kube_config
 
-- name: Check exists
-  fail:
-    msg: Ending this playbook. Kubeadm Init already completed
+- meta: end_play
   when: kube_config.stat.exists
 
 - name: Copy kubeadm-config.yaml

@@ -36,7 +36,6 @@
 ## Kubeadm join for worker nodes
 - name: Worker Node Setup
   include_tasks: workersetup.yml
-  when: inventory_hostname in groups['workers']
 
 ## Kube init on Master2
 - name: Master2 Setup
