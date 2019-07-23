@@ -8,7 +8,7 @@
   template:
     src: templates/workers/join-command.sh
     dest: $HOME/join-command.sh
-  when: inventory_hostname == 'worker1' or inventory_hostname == 'worker2' or inventory_hostname == 'worker3' and kube_config.stat.exists == False
+  when: (inventory_hostname == 'worker1' or inventory_hostname == 'worker2' or inventory_hostname == 'worker3') and kube_config.stat.exists == False
 
 - name: Add Sudo
   replace:
@@ -16,10 +16,10 @@
     regexp: 'kubeadm'
     replace: 'sudo kubeadm'
     backup: yes
-  when: inventory_hostname == 'worker1' or inventory_hostname == 'worker2' or inventory_hostname == 'worker3' and kube_config.stat.exists == False
+  when: (inventory_hostname == 'worker1' or inventory_hostname == 'worker2' or inventory_hostname == 'worker3') and kube_config.stat.exists == False
 
 
 - name: Kubeadm Join
   command: bash $HOME/join-command.sh
   tags: kubeadm_join
-  when: inventory_hostname == 'worker1' or inventory_hostname == 'worker2' or inventory_hostname == 'worker3' and kube_config.stat.exists == False
+  when: (inventory_hostname == 'worker1' or inventory_hostname == 'worker2' or inventory_hostname == 'worker3') and kube_config.stat.exists == False
