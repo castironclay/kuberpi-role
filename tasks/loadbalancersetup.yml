@@ -90,7 +90,4 @@
     path: /lib/systemd/system/heartbeat.service
     regexp: '^Restart='
     line: 'Restart=on-failure'
-
-- name: Reboot
-  become: true
-  reboot:
+  notify: Reboot
