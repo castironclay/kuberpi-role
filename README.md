@@ -2,12 +2,12 @@ Role Name
 =========
 
 This role  is used to setup an HA Kubernetes cluster with 7 Raspberry Pis.<br>
-This role will end with a 5 node cluster (2 masters and 3 workers) all in the ready status and use the Weave network overlay.<br>
+This role will end with a 5 node cluster (2 masters and 3 workers) all in the ready status with the Weave network overlay.<br>
 
 Requirements
 ------------
 
-All hosts that will be targeted by this role should be flashed with Hypriot v1.10 and not the traditional Raspbian image. 
+All hosts that will be targeted by this role should be flashed with [Hypriot](https://blog.hypriot.com/downloads/) v1.10 and not the traditional Raspbian image. 
 
 Role Variables
 --------------
