@@ -1,20 +1,24 @@
 ---
 # tasks file for baseline
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    update_cache: yes
+
 - name: Check Docker apt-mark hold
-  command: apt-mark showhold
+  command: apt-mark showhold -v
   register: docker_hold
 
 - name: Hold Docker Version
   become: true
   command: apt-mark hold docker
-  when: '"docker" not in docker_hold.stdout'
+  when: '"docker" not in docker_hold.stdout' 
 
 - name: Update and upgrade apt packages
   become: true
   apt:
     upgrade: yes
     update_cache: yes
-  tags: update
 
 - name: Install Packages
   become: true
