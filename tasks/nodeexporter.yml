@@ -1,7 +1,7 @@
 # tasks file for install prometheus node exporter
 - name: Node Exporter Check
   stat:
-    path: /etc/sysconfig/node_exporter
+    path: /usr/sbin/node_exporter
   register: node_exporter
 
 - name: Retrieve and Unarchive Binary
@@ -9,33 +9,33 @@
     src: https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-armv7.tar.gz
     dest: ~/
     remote_src: yes
-  when: node_exporter.stat.exists == 'False'
+  when: not node_exporter.stat.exists
 
 - name: Move binary to /usr/sbin
   become: yes
   command: mv /home/pirate/node_exporter-0.18.1.linux-armv7/node_exporter /usr/sbin/node_exporter
-  when: node_exporter.stat.exists == 'False'
+  when: not node_exporter.stat.exists
 
 - name: Create directory
   become: yes
   file:
     path: /etc/sysconfig
     state: directory
-  when: node_exporter.stat.exists == 'False'
+  when: not node_exporter.stat.exists
 
 - name: Touch file
   become: yes
   file:
     path: /etc/sysconfig/node_exporter
     state: touch
-  when: node_exporter.stat.exists == 'False'
+  when: not node_exporter.stat.exists
 
 - name: Copy systemd File
   become: yes
   template:
     src: templates/nodeexporter.service
     dest: /lib/systemd/system/nodeexporter.service
-  when: node_exporter.stat.exists == 'False'
+  when: not node_exporter.stat.exists
 
 - name: Systemctl daemon-reload
   become: yes
@@ -43,7 +43,7 @@
     state: restarted
     daemon_reload: yes
     name: nodeexporter
-  when: node_exporter.stat.exists == 'False'
+  when: not node_exporter.stat.exists
 
 - name: Enable nodeexporter service
   become: yes
@@ -51,4 +51,4 @@
     name: nodeexporter
     enabled: yes
     masked: no
-  when: node_exporter.stat.exists == 'False'
+  when: not node_exporter.stat.exists
