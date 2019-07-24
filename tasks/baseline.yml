@@ -60,4 +60,5 @@
   hostname: name={{ inventory_hostname }}
 
 - name: Reboot
+  become: true
   reboot:
