@@ -54,7 +54,7 @@
 - name: Apply Weave Network Manifest
   command: bash $HOME/weave.sh
   tags: kubectl_apply_weave
-  when: no weave.stat.exists
+  when: not weave.stat.exists
 
 - name: Generate join command
   command: kubeadm token create --print-join-command
