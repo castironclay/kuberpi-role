@@ -11,8 +11,8 @@
 
 - name: Hold Docker Version
   become: true
-  command: apt-mark hold docker docker-ce docker-ce-cli
-  when: '"docker" not in docker_hold.stdout'
+  command: aptitude hold docker-ce
+  when: '"docker-ce" not in docker_hold.stdout'
 
 - name: Update and upgrade apt packages
   become: true
